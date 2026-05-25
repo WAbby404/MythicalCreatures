@@ -1,5 +1,7 @@
-using MythicalCreatures.Server.Data;
 using Microsoft.EntityFrameworkCore;
+using MythicalCreatures.Server.Data;
+using MythicalCreatures.Server.Services.Implementations;
+using MythicalCreatures.Server.Services.Interfaces;
 //Program.cs is the entry point to your entire app.
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +19,7 @@ builder.Services.AddDbContext<MythicalCreaturesDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 //This is our DB Context!
-
+builder.Services.AddScoped<ICreatureService, CreatureService>(); //injecting our creatures service!
 
 var app = builder.Build();
 //once everything is registered, we build the app. After this line we can no longer register services

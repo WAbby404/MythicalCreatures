@@ -1,73 +1,26 @@
-# React + TypeScript + Vite
+﻿## UPDATED PER SESSION WITH NOTES (if not within code) with OpenCode!
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 5-24
+Backend Service layer Refactoring
 
-Currently, two official plugins are available:
+MythicalCreatures.Server
+├── Controllers/
+│   └── CreaturesController.cs     ← slimmed down, delegates to service
+├── Services/
+│   ├── Interfaces/
+│   │   └── ICreatureService.cs    ← defines the contract
+│   └── Implementations/
+│       └── CreatureService.cs     ← contains the business logic
+├── DTOs/                          ← stays the same
+├── Models/                        ← stays the same
+├── Data/                          ← stays the same
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+What we're moving:
+- Entity Frameowkr logic moves from within the controller into the service
+- ICreatureService defines the method signature
+- CreaturesController calls methods from ICreatureService 
+-  - help keep structure clean, controllers only handle http concerns
+-  - controller doesnt care how method works, just retuns results
+- Regiser ICreatureService -> CreatureService in Program.cs
+-  - meaning give this service a lifetime, tell the DI container "When asking for a ICreatureService, give them a CreatureService"
+-  - better for testing and swapping implementations
