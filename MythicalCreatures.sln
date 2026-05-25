@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36915.13 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "mythicalcreatures.client", "mythicalcreatures.client\mythicalcreatures.client.esproj", "{95D4A71E-9CF4-2C54-3CC4-F32D86A08D2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MythicalCreatures.Server", "MythicalCreatures.Server\MythicalCreatures.Server.csproj", "{626130BA-97C2-400B-9B55-ED1C72D6D3E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95D4A71E-9CF4-2C54-3CC4-F32D86A08D2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95D4A71E-9CF4-2C54-3CC4-F32D86A08D2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95D4A71E-9CF4-2C54-3CC4-F32D86A08D2B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{95D4A71E-9CF4-2C54-3CC4-F32D86A08D2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95D4A71E-9CF4-2C54-3CC4-F32D86A08D2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95D4A71E-9CF4-2C54-3CC4-F32D86A08D2B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{626130BA-97C2-400B-9B55-ED1C72D6D3E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{626130BA-97C2-400B-9B55-ED1C72D6D3E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{626130BA-97C2-400B-9B55-ED1C72D6D3E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{626130BA-97C2-400B-9B55-ED1C72D6D3E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DA3408F1-3896-4A23-95C1-4CD90BF4CDE1}
+	EndGlobalSection
+EndGlobal
