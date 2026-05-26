@@ -151,5 +151,3 @@ app.Run();
 //  public DateTime DateFirstSighted { get; set; }
 //  public List<string> Abilities { get; set; } -simplified list of names
 //}
-
-
