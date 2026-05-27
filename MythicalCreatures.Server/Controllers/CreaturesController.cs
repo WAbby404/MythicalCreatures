@@ -18,7 +18,11 @@ namespace MythicalCreatures.Server.Controllers
         }
 
         //GET /api/creatures
-        //returns all creatures as a list of CreatureResponseDto
+        /// <summary>
+        /// Returns a list of all mythical creatures
+        /// </summary>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet]
         public ActionResult<List<CreatureResponseDto>> GetCreatures() { //ActionResult gives us access to return OK(result), StatusCode(500, ex.Message), NotFound(), BadRequest()
             //moved to a service layer!
@@ -33,6 +37,13 @@ namespace MythicalCreatures.Server.Controllers
         }
 
         //GET return one creature
+        /// <summary>
+        /// Returns one creature with matching id
+        /// </summary>
+        /// <param name="id"></param>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("{id}")]
         public ActionResult<CreatureResponseDto> GetCreature(int id) //takes in an id as a parameter from the URL route
         {
@@ -52,6 +63,12 @@ namespace MythicalCreatures.Server.Controllers
         }
 
         //POST api/creatures
+        /// <summary>
+        /// Creates a creature
+        /// </summary>
+        /// <param name="dto"></param>
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost]
         public ActionResult<CreatureResponseDto> CreateCreature([FromBody] CreateCreatureDto dto) //accepts a [FromBody] DTO instead of a URL param
         {
@@ -70,6 +87,14 @@ namespace MythicalCreatures.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates a creature of a specified ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dto"></param>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("{id}")]
         public ActionResult<CreatureResponseDto> UpdateCreature(int id, [FromBody] UpdateCreatureDto dto)
         {
@@ -88,6 +113,13 @@ namespace MythicalCreatures.Server.Controllers
         }
 
         //DELETE
+        /// <summary>
+        /// Deletes a creature of a specified ID
+        /// </summary>
+        /// <param name="id"></param>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpDelete("{id}")]
         public ActionResult DeleteCreature (int id)
         {
@@ -96,7 +128,11 @@ namespace MythicalCreatures.Server.Controllers
             {
                 _creatureService.DeleteCreature(id);
                 return NoContent();
-            } catch(Exception ex)
+            }
+            catch (KeyNotFoundException) {
+                return NotFound();
+            }
+            catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
