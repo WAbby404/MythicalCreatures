@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MythicalCreatures.Server.Data;
 using MythicalCreatures.Server.Services.Implementations;
 using MythicalCreatures.Server.Services.Interfaces;
+using System.Reflection;
 //Program.cs is the entry point to your entire app.
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath);
+});
 //this is the dependency injection container, this is where you tell the app what services exist, here we're using:
 //Controllers (API endpoints)
 //Swagger (auto-generated API documentation / testing UI)
