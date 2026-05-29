@@ -10,11 +10,13 @@ namespace MythicalCreatures.Server.Services.Implementations
     public class CreatureService : ICreatureService
     {
         private readonly MythicalCreaturesDbContext _context; // - stores the injected DbContext
+        private readonly ILogger<CreatureService> _logger;
 
         //this is the constructor! DI in action, we dont create the context ourselves
-        public CreatureService(MythicalCreaturesDbContext context)
+        public CreatureService(MythicalCreaturesDbContext context, ILogger<CreatureService> logger)
         {
             _context = context; // _ prefix is a C# convention for a private field, you'll see this everywhere in real projects;
+            _logger = logger;
         }
 
         public List<CreatureResponseDto> GetCreatures()
@@ -46,12 +48,13 @@ namespace MythicalCreatures.Server.Services.Implementations
                     FoundInRegions = c.FoundInRegions.Select(a => a.Region.RegionName).ToList() //project to List<string>
                 }).ToList();
 
-                //return results
+                _logger.LogInformation("Successfully fetched all creatures");
                 return result;
             }
             catch (Exception ex)
             {
                 //Throws an exception with a descriptive error message
+                _logger.LogError(ex, "Error fetching all creatures");
                 throw new Exception($"Error fetching creatures: {ex.Message}", ex);
             }
         }
@@ -70,6 +73,7 @@ namespace MythicalCreatures.Server.Services.Implementations
 
                 if (creature == null) throw new KeyNotFoundException($"Creature with ID {id} not found."); //this handles the case of no creature found, returns a 404 error
 
+
                 var result = new CreatureResponseDto //mapping a single creature to a single ResponseDto - .Select() is not needed since this is only one creature
                 {
                     Id = creature.Id,
@@ -81,10 +85,8 @@ namespace MythicalCreatures.Server.Services.Implementations
                     Abilities = creature.Abilities.Select(a => a.AbilityName).ToList(),
                     FoundInRegions = creature.FoundInRegions.Select(a => a.Region.RegionName).ToList()
                 };
+                _logger.LogInformation("Successfully fetched creature with ID {id}", id);
                 return result;
-            }
-            catch (Exception ex)
-            {
                 throw new Exception($"Error fetching creature: {ex.Message}", ex);
             }
         }
@@ -140,10 +142,10 @@ namespace MythicalCreatures.Server.Services.Implementations
                     FoundInRegions = saved.FoundInRegions.Select(a => a.Region.RegionName).ToList()
                 };
 
+                _logger.LogInformation("Successfully created creature with ID {id}", result.Id);
                 return result;
-
-            }
-            catch (Exception ex)
+                
+            } catch (Exception ex)
             {
                 throw new Exception($"Error creating a new Creature: {ex.Message}", ex);
             }
@@ -201,11 +203,16 @@ namespace MythicalCreatures.Server.Services.Implementations
                     FoundInRegions = saved.FoundInRegions.Select(a => a.Region.RegionName).ToList()
                 };
 
-                //return that same creature
+                _logger.LogInformation("Successfully updated creature with ID {id}", id);
                 return result;
+            }
+            catch (KeyNotFoundException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error updating creature");
                 throw new Exception($"Error updating creature {id}: {ex.Message}", ex);
             }
         }
@@ -221,8 +228,9 @@ namespace MythicalCreatures.Server.Services.Implementations
                 _context.Creatures.Remove(creature);
 
                 _context.SaveChanges();
-            }
-            catch (Exception ex)
+
+                _logger.LogInformation("Successfully deleted creature with ID {id}", id);
+            } catch(Exception ex)
             {
                 throw new Exception($"Error deleting creature {id}: {ex.Message}", ex);
             }
